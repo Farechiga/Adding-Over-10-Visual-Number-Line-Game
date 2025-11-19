@@ -522,16 +522,18 @@
     3: document.getElementById('step3')
   };
 
-function setStep(stepNum) {
-  s1Section.style.display = (stepNum === 1) ? 'block' : 'none';
-  s2Section.style.display = (stepNum === 2) ? 'block' : 'none';
-  s3Section.style.display = (stepNum === 3) ? 'block' : 'none';
+function setStep(step) {
+  // Show only the active step section
+  [1, 2, 3].forEach((s) => {
+    stepSections[s].classList.toggle('active', s === step);
+  });
 
-  if (stepNum === 1) {
+  // Auto-focus the correct input for this step
+  if (step === 1) {
     s1Input.focus();
-  } else if (stepNum === 2) {
+  } else if (step === 2) {
     s2Input.focus();
-  } else if (stepNum === 3) {
+  } else if (step === 3) {
     s3Input.focus();
   }
 }
@@ -774,28 +776,37 @@ function setStep(stepNum) {
   });
 
   s3CheckBtn.addEventListener('click', () => {
-    const val = parseInt(s3Input.value, 10);
-    if (!Number.isFinite(val)) {
-      s3Feedback.textContent = 'Fill in the answer.';
-      s3Feedback.className = 'feedback err';
-      return;
-    }
-    if (val === total) {
-      s3Feedback.textContent = `Great! 10 + ${leftover} = ${total} and ${bottomNum} + ${topNum} = ${total}.`;
-      s3Feedback.className = 'feedback ok';
-      s3Input.disabled = true;
-      s3CheckBtn.disabled = true;
+  const val = parseInt(s3Input.value, 10);
+  if (!Number.isFinite(val)) {
+    s3Feedback.textContent = 'Fill in the answer.';
+    s3Feedback.className = 'feedback err';
+    return;
+  }
 
-      if (!finishedThisProblem) {
-        finishedThisProblem = true;
-        correctCount += 1;
-        correctCountEl.textContent = correctCount;
-        launchConfetti();
-      
-        setTimeout(() => {
-          startNewProblem();
-        }, 400);
-      }
+  if (val === total) {
+    s3Feedback.textContent =
+      `Great! 10 + ${leftover} = ${total} and ${bottomNum} + ${topNum} = ${total}.`;
+    s3Feedback.className = 'feedback ok';
+    s3Input.disabled = true;
+    s3CheckBtn.disabled = true;
+
+    if (!finishedThisProblem) {
+      finishedThisProblem = true;
+      correctCount += 1;
+      correctCountEl.textContent = correctCount;
+      launchConfetti();
+
+      // 🔹 Auto-generate a new problem after a short pause
+      setTimeout(() => {
+        startNewProblem();   // this also re-focuses Step 1 input
+      }, 1000);
+    }
+  } else {
+    s3Feedback.textContent =
+      'Check the number line. Count from 10 up to the top of the black stack.';
+    s3Feedback.className = 'feedback err';
+  }
+});
 
         // 🔹 Auto-generate a new problem after a short pause
         setTimeout(() => {
