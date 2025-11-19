@@ -723,7 +723,7 @@
     }
   }
 
-  /* STEP HANDLERS */
+    /* STEP HANDLERS */
 
   s1CheckBtn.addEventListener('click', () => {
     const val = parseInt(s1Input.value, 10);
@@ -775,11 +775,17 @@
       s3Feedback.className = 'feedback ok';
       s3Input.disabled = true;
       s3CheckBtn.disabled = true;
+
       if (!finishedThisProblem) {
         finishedThisProblem = true;
         correctCount += 1;
         correctCountEl.textContent = correctCount;
         launchConfetti();
+
+        // 🔹 Auto-generate a new problem after a short pause
+        setTimeout(() => {
+          startNewProblem();   // defined in the TOP BUTTONS section below
+        }, 1200);
       }
     } else {
       s3Feedback.textContent = 'Check the number line. Count from 10 up to the top of the black stack.';
@@ -787,11 +793,15 @@
     }
   });
 
-  /* TOP BUTTONS */
+ /* TOP BUTTONS + SHARED NEW-PROBLEM FUNCTION */
 
-  newProblemBtn.addEventListener('click', () => {
+  function startNewProblem() {
     randomProblem();
     renderAllSteps();
+  }
+
+  newProblemBtn.addEventListener('click', () => {
+    startNewProblem();
   });
 
   resetScoreBtn.addEventListener('click', () => {
