@@ -808,17 +808,6 @@ function setStep(step) {
   }
 });
 
-        // 🔹 Auto-generate a new problem after a short pause
-        setTimeout(() => {
-          startNewProblem();   // defined in the TOP BUTTONS section below
-        }, 1200);
-      }
-    } else {
-      s3Feedback.textContent = 'Check the number line. Count from 10 up to the top of the black stack.';
-      s3Feedback.className = 'feedback err';
-    }
-  });
-
     /* ENTER / RETURN KEY SHORTCUTS */
 
   function wireEnterAdvance(inputEl, buttonEl) {
