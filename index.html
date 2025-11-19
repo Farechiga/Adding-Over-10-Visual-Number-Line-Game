@@ -522,11 +522,19 @@
     3: document.getElementById('step3')
   };
 
-  function setStep(step) {
-    [1,2,3].forEach(s => {
-      stepSections[s].classList.toggle('active', s === step);
-    });
+function setStep(stepNum) {
+  s1Section.style.display = (stepNum === 1) ? 'block' : 'none';
+  s2Section.style.display = (stepNum === 2) ? 'block' : 'none';
+  s3Section.style.display = (stepNum === 3) ? 'block' : 'none';
+
+  if (stepNum === 1) {
+    s1Input.focus();
+  } else if (stepNum === 2) {
+    s2Input.focus();
+  } else if (stepNum === 3) {
+    s3Input.focus();
   }
+}
 
   /* ticks 0–20, shared by all 3 panels */
   function buildTicksForAllLines() {
@@ -738,6 +746,7 @@
       s1Input.disabled = true;
       s1CheckBtn.disabled = true;
       setStep(2);
+      s2Input.focus();
     } else {
       s1Feedback.textContent = 'Not yet. Count the steps from the magenta bar up to the green line.';
       s1Feedback.className = 'feedback err';
@@ -757,6 +766,7 @@
       s2Input.disabled = true;
       s2CheckBtn.disabled = true;
       setStep(3);
+      s3Input.focus();
     } else {
       s2Feedback.textContent = 'Try again. How many are left from the top number?';
       s2Feedback.className = 'feedback err';
@@ -781,6 +791,11 @@
         correctCount += 1;
         correctCountEl.textContent = correctCount;
         launchConfetti();
+      
+        setTimeout(() => {
+          startNewProblem();
+        }, 400);
+      }
 
         // 🔹 Auto-generate a new problem after a short pause
         setTimeout(() => {
@@ -813,12 +828,14 @@
  /* TOP BUTTONS + SHARED NEW-PROBLEM FUNCTION */
 
   function startNewProblem() {
+    s1Input.focus();
     randomProblem();
     renderAllSteps();
   }
 
   newProblemBtn.addEventListener('click', () => {
     startNewProblem();
+    s1Input.focus();
   });
 
   resetScoreBtn.addEventListener('click', () => {
