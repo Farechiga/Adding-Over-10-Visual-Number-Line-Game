@@ -793,6 +793,23 @@
     }
   });
 
+    /* ENTER / RETURN KEY SHORTCUTS */
+
+  function wireEnterAdvance(inputEl, buttonEl) {
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!buttonEl.disabled && !inputEl.disabled) {
+          buttonEl.click();
+        }
+      }
+    });
+  }
+
+  wireEnterAdvance(s1Input, s1CheckBtn);
+  wireEnterAdvance(s2Input, s2CheckBtn);
+  wireEnterAdvance(s3Input, s3CheckBtn);
+
  /* TOP BUTTONS + SHARED NEW-PROBLEM FUNCTION */
 
   function startNewProblem() {
