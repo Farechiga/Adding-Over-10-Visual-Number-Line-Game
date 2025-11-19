@@ -231,6 +231,14 @@
     .bar.black   { background: #000000; }
     .bar.composite { background: transparent; }
 
+    /* Step 2 “?” bar showing the unknown leftover height */
+    .bar.placeholder {
+      background: #ffffff;
+      color: #9ca3af;
+      border: 3px solid #d1d5db;
+      box-shadow: none;
+    }
+    
     .segments {
       position: absolute;
       inset: 0;
@@ -425,10 +433,13 @@
           </div>
         </div>
 
-        <!-- Right: show ONLY the purple "amount moved to make 10", top aligned with 10 -->
+        <!-- Right: purple “amount moved to 10” + grey ? bar for the leftover -->
         <div class="stack stack-right">
           <div class="bar purple" id="s2-purple-right-bar">
             <span class="digit" id="s2-purple-right-digit">2</span>
+          </div>
+          <div class="bar placeholder" id="s2-leftover-placeholder">
+            <span class="digit" id="s2-leftover-placeholder-digit">?</span>
           </div>
         </div>
 
@@ -631,6 +642,8 @@ function setStep(step) {
   const s2TopDigit     = document.getElementById('s2-top-digit');
   const s2PurpleRightBar   = document.getElementById('s2-purple-right-bar');
   const s2PurpleRightDigit = document.getElementById('s2-purple-right-digit');
+  const s2LeftoverPlaceholder   = document.getElementById('s2-leftover-placeholder');
+  const s2LeftoverPlaceholderDigit = document.getElementById('s2-leftover-placeholder-digit');
   const s2TopLabel     = document.getElementById('s2-top-label');
   const s2MoveLabel    = document.getElementById('s2-move-label');
   const s2Input        = document.getElementById('s2-input');
@@ -653,6 +666,15 @@ function setStep(step) {
     s2PurpleRightBar.style.bottom = ((10 - needToTen) * UNIT) + 'px';
     s2PurpleRightBar.style.height = (needToTen * UNIT) + 'px';
 
+    s2TopLabel.textContent = topNum;
+    s2MoveLabel.textContent = needToTen;
+
+
+    // Grey “?” bar: same height as the leftover, sitting above the 10 line
+    s2LeftoverPlaceholderDigit.textContent = '?';
+    s2LeftoverPlaceholder.style.bottom = (10 * UNIT) + 'px';
+    s2LeftoverPlaceholder.style.height = (leftover * UNIT) + 'px';
+    
     s2TopLabel.textContent  = topNum;
     s2MoveLabel.textContent = needToTen;
 
